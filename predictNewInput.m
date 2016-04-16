@@ -1,4 +1,4 @@
-function predictNewInput(Theta1, Theta2, X, y, audioFiles)
+function p = predictNewInput(Theta1, Theta2, X, y, audioFiles)
 	h = feedForward(X, Theta1, Theta2);
 	p = (h >= 0.5)';
 
