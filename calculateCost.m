@@ -1,17 +1,17 @@
 function [J gradients] = calculateCost(unrolledThetas, inputLayerSize, hiddenLayerSize, labelsCount, X, y, lambda, m)	
 	% Reshape unrolled weights
-	Theta1 = reshape(unrolledThetas(1:hiddenLayerSize * (inputLayerSize + 1)), hiddenLayerSize, (inputLayerSize + 1));
+	Theta1 = reshape(unrolledThetas(1:hiddenLayerSize * (inputLayerSize + 1)), hiddenLayerSize, (inputLayerSize + 1));	
 	Theta2 = reshape(unrolledThetas((1 + (hiddenLayerSize * (inputLayerSize + 1))):end), labelsCount, (hiddenLayerSize + 1));
-	
+
 	% Perform forward propagation
-	[H a3 a2 a1 z2] = feedForward(X, Theta1, Theta2);
+	[h a3 a2 a1 z2] = feedForward(X, Theta1, Theta2);
 				 
 	% Compute the cost function
-	J = getError(H, y, m);
+	J = getError(h, y, m, Theta1, Theta2, lambda);
 	
 	% Perform backpropagation
-	[Theta1Gradients Theta2Gradients] = backpropagate(Theta1, Theta2, y, a3, a2, a1, z2, m);
-	
+	[D1 D2] = backpropagate(Theta1, Theta2, y, a3, a2, a1, z2, m, lambda);
+
 	% Unroll gradients
-	gradients = [Theta1Gradients(:) ; Theta2Gradients(:)];
+	gradients = [D1(:) ; D2(:)];
 end

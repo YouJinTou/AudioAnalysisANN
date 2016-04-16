@@ -1,9 +1,9 @@
 function [X y] = loadData(dir)
 	% Data locations
-	mainDir = 'D:/Programming/Git Repositories/Backprop ANN Audio Analysis';
-	trainingDir = 'D:\Programming\Git Repositories\Backprop ANN Audio Analysis\Samples\Training Set';
-	crossValidationDir = 'D:\Programming\Git Repositories\Backprop ANN Audio Analysis\Samples\Cross-validation Set';
-	testDir = 'D:\Programming\Git Repositories\Backprop ANN Audio Analysis\Samples\Test Set';
+	mainDir = 'D:/Programming/Git Repositories/Prototypal Backprop ANN Audio Analysis';
+	trainingDir = 'D:\Programming\Git Repositories\Prototypal Backprop ANN Audio Analysis\Samples\Training Set';
+	crossValidationDir = 'D:\Programming\Git Repositories\Prototypal Backprop ANN Audio Analysis\Samples\Cross-validation Set';
+	testDir = 'D:\Programming\Git Repositories\Prototypal Backprop ANN Audio Analysis\Samples\Test Set';
 	
 	% Variables
 	trainingAudioFiles = readdir(trainingDir);

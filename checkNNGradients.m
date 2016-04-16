@@ -1,4 +1,4 @@
-function checkNNGradients(Theta1, Theta2, lambda, m)
+function checkNNGradients(X, y, lambda, m)
 %CHECKNNGRADIENTS Creates a small neural network to check the
 %backpropagation gradients
 %   CHECKNNGRADIENTS(lambda) Creates a small neural network to check the
