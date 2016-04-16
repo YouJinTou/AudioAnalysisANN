@@ -1,4 +1,4 @@
-function [X y] = fillInputOutput(audioFiles, dir)
+function [X y audioFiles] = fillInputOutput(audioFiles, dir)
 	% Data locations
 	mainDir = 'D:/Programming/Git Repositories/Prototypal Backprop ANN Audio Analysis';
 	trainingDir = 'D:\Programming\Git Repositories\Prototypal Backprop ANN Audio Analysis\Samples\Training Set';
@@ -52,6 +52,7 @@ function [X y] = fillInputOutput(audioFiles, dir)
 		X(i, 6) = mean(audioFile(4 * audioFileSegment + 1 : 5 * audioFileSegment)); % 4 x m + 1 to 5 x m		
 	end
 	
-	y = y(dummyFiles + 1 : end, 1);
+	y = y(dummyFiles + 1 : end, :);
 	X = X(dummyFiles + 1 : end, :);
+	audioFiles = audioFiles(dummyFiles + 1 : end, :);
 end

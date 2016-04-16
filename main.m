@@ -13,7 +13,7 @@ hiddenLayerSize = 5; % Five neurons in the hidden layer
 labelsCount = 1; % Man or machine
 
 % Load training data
-[Xtrain ytrain] = loadData(trainingDir);
+[Xtrain ytrain audioFiles] = loadData(trainingDir);
 
 % Normalize training data
 Xtrain = featureNormalize(Xtrain);
@@ -42,7 +42,7 @@ optimizedThetas = fmincg(costFunction, unrolledThetas, options);
 % checkNNGradients(Xtrain, ytrain, lambda, m);
 
 % Load cross-validation data
-[Xcv ycv] = loadData(crossValidationDir);
+[Xcv ycv audioFiles] = loadData(crossValidationDir);
 
 % Normalize cross-validation data
 Xcv = featureNormalize(Xcv);
@@ -52,7 +52,5 @@ Xcv = featureNormalize(Xcv);
 
 %plotLearningCurve(errorTrain, errorCV, m);
 
-% Prediction
-predictions = predictNewInput(Theta1, Theta2, Xcv);
-
-fprintf('\nTraining set accuracy: %f\n', mean(double(predictions == ycv)) * 100);
+% Predict new input
+predictNewInput(Theta1, Theta2, Xcv, ycv, audioFiles);
