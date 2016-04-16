@@ -1,4 +1,4 @@
-function [X y] = loadData(dir)
+function [X y audioFiles] = loadData(dir)
 	% Data locations
 	mainDir = 'D:/Programming/Git Repositories/Prototypal Backprop ANN Audio Analysis';
 	trainingDir = 'D:\Programming\Git Repositories\Prototypal Backprop ANN Audio Analysis\Samples\Training Set';
@@ -12,11 +12,11 @@ function [X y] = loadData(dir)
 	
 	switch (dir)
 		case trainingDir
-			[X y] = fillInputOutput(trainingAudioFiles, dir);
+			[X y audioFiles] = fillInputOutput(trainingAudioFiles, dir);
 		case crossValidationDir
-			[X y] = fillInputOutput(crossValidationFiles, dir);
+			[X y audioFiles] = fillInputOutput(crossValidationFiles, dir);
 		case testDir
-			[X y] = fillInputOutput(testFiles, dir);
+			[X y audioFiles] = fillInputOutput(testFiles, dir);
 	end	
 	
 	% Return to main directory
