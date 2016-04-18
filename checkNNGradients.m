@@ -14,8 +14,7 @@ end
 
 input_layer_size = 6;
 hidden_layer_size = 5;
-num_labels = 1;
-m = 64;
+num_labels = 2;
 
 % We generate some 'random' test data
 Theta1 = debugInitializeWeights(hidden_layer_size, input_layer_size);

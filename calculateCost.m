@@ -7,7 +7,7 @@ function [J gradients] = calculateCost(unrolledThetas, inputLayerSize, hiddenLay
 	[h a3 a2 a1 z2] = feedForward(X, Theta1, Theta2);
 				 
 	% Compute the cost function
-	J = getError(h, y, m, Theta1, Theta2, lambda);
+	J = getError(h, y, m, Theta1, Theta2, labelsCount, lambda);
 	
 	% Perform backpropagation
 	[D1 D2] = backpropagate(Theta1, Theta2, y, a3, a2, a1, z2, m, lambda);

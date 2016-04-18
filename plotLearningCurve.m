@@ -4,5 +4,5 @@ function plotLearningCurve(errorTrain, errorCV, m)
 	legend('Train', 'Cross-validation')
 	xlabel('Number of training examples')
 	ylabel('Error')
-	axis([0 m 0 3])
+	axis([0 m])
 end

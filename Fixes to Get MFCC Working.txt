@@ -1,0 +1,49 @@
+1. Download the "signal" package
+2. Fix powspec.m with "WINDOW = hanning(winpts);"
+3. Fix specgram.m with:
+if rem(n,2)==1
+ret_n = (n+1)/2;
+else
+ret_n = n/2 + 1;
+endif
+S = S(1:ret_n, :);
+
+4. Fix levinson.m with:
+function [a, v, ref] = levinson (acf, p)
+%if ( nargin<1 )
+%  error( 'usage: [a,v,ref]=levinson(acf,p)\n', 1);
+%elseif ( ~isvector(acf) || length(acf)<2 )
+%  error( 'levinson: arg 1 (acf) must be vector of length >1\n', 1);
+%elseif ( nargin>1 && ( ~isscalar(p) || fix(p)~=p || p>length(acf)-2 ) )
+%  error( 'aryule: arg 2 (p) must be integer >0 and <length(acf)-1\n', 1);
+%else 
+  if (nargin == 1) p = length(acf) - 1; end
+  for i=1 : size(acf,2)
+      %if( columns(acf)>1 ) acf=acf(:); end     %# force a column vector
+
+      if nargout < 3 && p < 100
+    %     ## direct solution [O(p^3), but no loops so slightly faster for small p]
+    %     ##   Kay & Marple Eqn (2.39)
+        R = toeplitz(acf(1:p,i), conj(acf(1:p,i)));
+        ap = R \ -acf(2:p+1,i);
+        ap = [ 1, ap.' ];
+        a(i,:) = ap;
+        v(i,:) = real( ap*conj(acf(1:p+1,i)) );
+      else
+    %     ## durbin-levinson [O(p^2), so significantly faster for large p]
+    %     ##   Kay & Marple Eqns (2.42-2.46)
+        ref = zeros(p,1);
+        g = -acf(2,i)/acf(1);
+        ap = [ g ];       
+        a(i,:) = ap;       
+        v(i,:) = real( ( 1 - g*conj(g)) * acf(1,i) );
+        ref(1) = g;
+        for t = 2 : p
+          g = -(acf(t+1,i) + ap * acf(t:-1:2,i)) / v(i,:);
+          ap = [ ap+g*conj(ap(t-1:-1:1)), g ];
+          v(i,:) = v(i,:) * ( 1 - real(g*conj(g)) ) ;
+          ref(t) = g;
+        end
+        a(i,:) = [1, ap];
+      end
+  end

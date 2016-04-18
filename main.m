@@ -1,15 +1,15 @@
 % Clear environment
 clear; close all; clc
 
-% Constants
-mainDir = 'D:/Programming/Git Repositories/Prototypal Backprop ANN Audio Analysis';
-trainingDir = 'D:\Programming\Git Repositories\Prototypal Backprop ANN Audio Analysis\Samples\Training Set';
-crossValidationDir = 'D:\Programming\Git Repositories\Prototypal Backprop ANN Audio Analysis\Samples\Cross-validation Set';
-testDir = 'D:\Programming\Git Repositories\Prototypal Backprop ANN Audio Analysis\Samples\Test Set';
+% Data locations
+mainDir = 'C:/Users/DIMITARD/Desktop/Random/Tests/Check/Prototypal Backprop ANN Audio Analysis/';
+trainingDir = 'C:/Users/DIMITARD/Desktop/Random/Tests/Check/Prototypal Backprop ANN Audio Analysis/Samples/Training Set';
+crossValidationDir = 'C:/Users/DIMITARD/Desktop/Random/Tests/Check/Prototypal Backprop ANN Audio Analysis/Samples/Cross-validation Set';
+testDir = 'C:/Users/DIMITARD/Desktop/Random/Tests/Check/Prototypal Backprop ANN Audio Analysis/Samples/Test Set';
 
 % Initialize layer variables
-inputLayerSize  = 6; % Mean + 5 x 20% sections 
-hiddenLayerSize = 5; % Five neurons in the hidden layer
+inputLayerSize  = 34; % Mean + 20 x 5% sections + 13 MFCCs
+hiddenLayerSize = 10; % Ten neurons in the hidden layer
 labelsCount = 1; % Man or machine
 
 % Load training data
@@ -29,7 +29,7 @@ Theta2 = initializeRandomWeights(hiddenLayerSize, labelsCount); % From hidden la
 unrolledThetas = [Theta1(:) ; Theta2(:)];
 
 % Run a cost-minimization function
-lambda = 0; % Regularization parameter
+lambda = 1; % Regularization parameter
 costFunction = @(p) calculateCost(p, inputLayerSize, hiddenLayerSize, labelsCount, Xtrain, ytrain, lambda, m);
 options = optimset('MaxIter', 50);
 
@@ -39,10 +39,10 @@ optimizedThetas = fmincg(costFunction, unrolledThetas, options);
 [Theta1 Theta2] = reshapeThetas(optimizedThetas, inputLayerSize, hiddenLayerSize, labelsCount);
 
 % Check if backpropagation works correctly
-% checkNNGradients(Xtrain, ytrain, lambda, m);
+%checkNNGradients(Xtrain, ytrain, lambda, m);
 
 % Load cross-validation data
-[Xcv ycv audioFiles] = loadData(crossValidationDir);
+[Xcv ycv audioFiles] = loadData(testDir);
 
 % Normalize cross-validation data
 Xcv = featureNormalize(Xcv);
@@ -53,4 +53,4 @@ Xcv = featureNormalize(Xcv);
 %plotLearningCurve(errorTrain, errorCV, m);
 
 % Predict new input
-predictNewInput(Theta1, Theta2, Xcv, ycv, audioFiles);
+predictNewInput(Theta1, Theta2, Xcv, ycv, audioFiles, labelsCount);
