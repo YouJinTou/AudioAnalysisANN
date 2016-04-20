@@ -30,5 +30,6 @@ function averageMFFCs = getFeaturesMFCC(X, audioFile, dir)
 	cd (mainDir);
 	
 	[cep] = mfcc(X, sf);
+	
 	averageMFFCs = mean(cep.');
 end

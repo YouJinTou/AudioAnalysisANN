@@ -1,7 +1,7 @@
 function [X y audioFiles] = fillInputOutput(audioFiles, dir)	
 	mainDir = 'C:/Users/DIMITARD/Desktop/Random/Tests/Check/Prototypal Backprop ANN Audio Analysis/';		
 	m = size(audioFiles, 1);
-	X = zeros(m, 34); % Sixty features
+	X = zeros(m, 37); % Thirty-seven features
 	y = zeros(m, 1);
 	length = length(audioFiles);
 	dummyFiles = 0;
@@ -25,37 +25,40 @@ function [X y audioFiles] = fillInputOutput(audioFiles, dir)
 			y(i, 1) = 1;
 		end		
 				
-		audioFile = wavread(audioFiles{i});		
-		audioFileLength = size(audioFile, 1);
+		[S fs] = wavread(audioFiles{i});		
+		audioFileLength = size(S, 1);
 		audioFileSegment = floor(audioFileLength / 20);
 		
 		% Input features					
 		X(i, 1) = audioFileLength;
-		X(i, 2) = mean(audioFile(1 : audioFileSegment)); % 1 to m
-		X(i, 3) = mean(audioFile(audioFileSegment + 1 : 2 * audioFileSegment)); % m + 1 to 2 x m
-		X(i, 4) = mean(audioFile(2 * audioFileSegment + 1 : 3 * audioFileSegment)); % 2 x m + 1 to 3 x m
-		X(i, 5) = mean(audioFile(3 * audioFileSegment + 1 : 4 * audioFileSegment)); % 3 x m + 1 to 4 x m
-		X(i, 6) = mean(audioFile(4 * audioFileSegment + 1 : 5 * audioFileSegment)); % ...		
-		X(i, 7) = mean(audioFile(5 * audioFileSegment + 1 : 6 * audioFileSegment)); % ...
-		X(i, 8) = mean(audioFile(6 * audioFileSegment + 1 : 7 * audioFileSegment)); % ...
-		X(i, 9) = mean(audioFile(7 * audioFileSegment + 1 : 8 * audioFileSegment)); % ...
-		X(i, 10) = mean(audioFile(8 * audioFileSegment + 1 : 9 * audioFileSegment)); 
-		X(i, 11) = mean(audioFile(9 * audioFileSegment + 1 : 10 * audioFileSegment)); 
-		X(i, 12) = mean(audioFile(10 * audioFileSegment + 1 : 11 * audioFileSegment)); 
-		X(i, 13) = mean(audioFile(11 * audioFileSegment + 1 : 12 * audioFileSegment)); 
-		X(i, 14) = mean(audioFile(12 * audioFileSegment + 1 : 13 * audioFileSegment)); 
-		X(i, 15) = mean(audioFile(13 * audioFileSegment + 1 : 14 * audioFileSegment)); 
-		X(i, 16) = mean(audioFile(14 * audioFileSegment + 1 : 15 * audioFileSegment)); 
-		X(i, 17) = mean(audioFile(15 * audioFileSegment + 1 : 16 * audioFileSegment)); 
-		X(i, 18) = mean(audioFile(16 * audioFileSegment + 1 : 17 * audioFileSegment)); 
-		X(i, 19) = mean(audioFile(17 * audioFileSegment + 1 : 18 * audioFileSegment)); 
-		X(i, 20) = mean(audioFile(18 * audioFileSegment + 1 : 19 * audioFileSegment)); 
-		X(i, 21) = mean(audioFile(19 * audioFileSegment + 1 : 20 * audioFileSegment)); 
+		X(i, 2) = mean(S(1 : audioFileSegment)); % 1 to m
+		X(i, 3) = mean(S(audioFileSegment + 1 : 2 * audioFileSegment)); % m + 1 to 2 x m
+		X(i, 4) = mean(S(2 * audioFileSegment + 1 : 3 * audioFileSegment)); % 2 x m + 1 to 3 x m
+		X(i, 5) = mean(S(3 * audioFileSegment + 1 : 4 * audioFileSegment)); % 3 x m + 1 to 4 x m
+		X(i, 6) = mean(S(4 * audioFileSegment + 1 : 5 * audioFileSegment)); % ...		
+		X(i, 7) = mean(S(5 * audioFileSegment + 1 : 6 * audioFileSegment)); % ...
+		X(i, 8) = mean(S(6 * audioFileSegment + 1 : 7 * audioFileSegment)); % ...
+		X(i, 9) = mean(S(7 * audioFileSegment + 1 : 8 * audioFileSegment)); % ...
+		X(i, 10) = mean(S(8 * audioFileSegment + 1 : 9 * audioFileSegment)); 
+		X(i, 11) = mean(S(9 * audioFileSegment + 1 : 10 * audioFileSegment)); 
+		X(i, 12) = mean(S(10 * audioFileSegment + 1 : 11 * audioFileSegment)); 
+		X(i, 13) = mean(S(11 * audioFileSegment + 1 : 12 * audioFileSegment)); 
+		X(i, 14) = mean(S(12 * audioFileSegment + 1 : 13 * audioFileSegment)); 
+		X(i, 15) = mean(S(13 * audioFileSegment + 1 : 14 * audioFileSegment)); 
+		X(i, 16) = mean(S(14 * audioFileSegment + 1 : 15 * audioFileSegment)); 
+		X(i, 17) = mean(S(15 * audioFileSegment + 1 : 16 * audioFileSegment)); 
+		X(i, 18) = mean(S(16 * audioFileSegment + 1 : 17 * audioFileSegment)); 
+		X(i, 19) = mean(S(17 * audioFileSegment + 1 : 18 * audioFileSegment)); 
+		X(i, 20) = mean(S(18 * audioFileSegment + 1 : 19 * audioFileSegment)); 
+		X(i, 21) = mean(S(19 * audioFileSegment + 1 : 20 * audioFileSegment));
 		
 		cd (mainDir);
 		
-		X(i, 22:34) = getFeaturesMFCC(X, audioFiles{i}, dir);
-			
+		X(i, 22) = getSpectralSpread(S, fs); % helps a lot
+		X(i, 23) = mean(getShortTimeEnergy(S, fs));
+		X(i, 24) = getZeroCrossingRate(S);
+		X(i, 25:37) = getFeaturesMFCC(S, audioFiles{i}, dir);
+		
 		cd (dir);	
 	end
 	

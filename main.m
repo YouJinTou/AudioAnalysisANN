@@ -8,7 +8,7 @@ crossValidationDir = 'C:/Users/DIMITARD/Desktop/Random/Tests/Check/Prototypal Ba
 testDir = 'C:/Users/DIMITARD/Desktop/Random/Tests/Check/Prototypal Backprop ANN Audio Analysis/Samples/Test Set';
 
 % Initialize layer variables
-inputLayerSize  = 34; % Mean + 20 x 5% sections + 13 MFCCs
+inputLayerSize  = 37; % Mean + 20 x 5% sections + 13 MFCCs + ZCR + STE + spread + LPC
 hiddenLayerSize = 10; % Ten neurons in the hidden layer
 labelsCount = 1; % Man or machine
 
@@ -42,7 +42,7 @@ optimizedThetas = fmincg(costFunction, unrolledThetas, options);
 %checkNNGradients(Xtrain, ytrain, lambda, m);
 
 % Load cross-validation data
-[Xcv ycv audioFiles] = loadData(testDir);
+[Xcv ycv audioFiles] = loadData(crossValidationDir);
 
 % Normalize cross-validation data
 Xcv = featureNormalize(Xcv);
